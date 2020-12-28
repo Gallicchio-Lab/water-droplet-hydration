@@ -1,0 +1,5 @@
+#!/bin/bash
+openmm_dir=/home/u15684/software/openmm-7.3.1
+pythondir=/home/u15684/miniconda-latest
+export LD_LIBRARY_PATH=${openmm_dir}/lib:${openmm_dir}/lib/plugins:$LD_LIBRARY_PATH
+${pythondir}/bin/python "$@"
