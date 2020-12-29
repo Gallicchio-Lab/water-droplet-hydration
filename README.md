@@ -63,10 +63,22 @@ Go to the simulation directories of each complex and launch the ASyncRE simulati
 
 To run simualtion of Ethanol solute with water droplet under linear alchemical schedule, go to directory **EtOH-lin** *(**-lin** complex directories specify **linear alchemical schedule**, **-log** complex directories specify **logistic alchemical schedule with softplus parameters**.)*
 
+Set the `nodefile` to point to a set of GPUs on the local machine. For example:
+
 ```
-cd $HOME/water-droplet/complexes/EtOH-lin
+locahost,0:0,1,OpenCL,,/tmp
+locahost,0:1,1,OpenCL,,/tmp
+locahost,0:2,1,OpenCL,,/tmp
+locahost,0:3,1,OpenCL,,/tmp
+```
+
+for a compute server with 4 GPUs when the OpenCL platform is the first platform (0).
+
+```
 ./runopenmm $HOME/devel/async_re-openmm/bedamtemptwd_async_re.py water-droplet-ethanol_asyncre.cntl
 ```
+
+Adjust the settings in the ```runopenmm``` script to reflect your environment.
 
 Each RE simulation is set to run for 480 mins (8 hours). You can change the duration of the simulation run by changing the ```WALL_TIME``` in the ```*_asyncre.cntl``` file present in each complex directory.
 Monitor the progress of each ASyncRE simulation by inspecting the ```*_stat.txt``` file. For example:
