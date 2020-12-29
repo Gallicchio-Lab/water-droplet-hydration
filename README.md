@@ -97,7 +97,7 @@ The ASyncRE process can be killed at any time with ```^C``` and optionally resta
 
 ## Output
 
-Once the simulation is started, replica directories pointing at each lambda value in the alchemical schedule are produced. 
+Once the simulation has started, replica directories pointing at each lambda value in the alchemical schedule are produced. 
 In each replica directory, a  ```*.out``` is created producing columns of values in the order: temperature, lambda, lambda1, lambda2, alpha, u0, w0, total potential energy, binding energy.
 
 This output file can then be used to analyze the average value of different parameters over the course of simulation.
