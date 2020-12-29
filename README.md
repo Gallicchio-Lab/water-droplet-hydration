@@ -20,18 +20,18 @@ The repository is maintained by the Gallicchio's laboratory at Department of Che
 
 ## Documentation and Tutorials
 
-The project walks you over the steps to setup and run alchemical absolute binding free energy calculations for a series of  solute complexes with water droplet (TIP3P model) using the Single Decoupling (SDM) OpenMM's plugin.
+The project walks you over the steps to setup and run alchemical absolute binding free energy calculations for a series of solute complexes with water droplet (TIP3P model) using the Single Decoupling (SDM) OpenMM's plugin.
 
 ## Gathering Software Tools
 
 ### OpenMM
 
-We recommend installing OpenMM from [source](https://github.com/openmm/openmm) since most of the steps required are the same as for building the SDM-related plugins. However binary installations of OpenMM should probably also work. Detailed building instructions for OpenMM are [here](http://docs.openmm.org/latest/userguide/library.html#compiling-openmm-from-source-code). SDM requires an OpenCL platform with GPUs from NVIDIA (CUDA) or AMD, which we assume are in place. We developed a [docker image](https://hub.docker.com/repository/docker/egallicchio/centos610-openmmbuilder) with all of the tools to build OpenMM. 
+We recommend installing OpenMM from [source](https://github.com/openmm/openmm) since most of the steps required are the same as for building the SDM-related plugins. However, binary installations of OpenMM should probably also work. Detailed building instructions for OpenMM are [here](http://docs.openmm.org/latest/userguide/library.html#compiling-openmm-from-source-code). SDM requires an OpenCL platform with GPUs from NVIDIA (CUDA) or AMD, which we assume are in place. We developed a [docker image](https://hub.docker.com/repository/docker/egallicchio/centos610-openmmbuilder) with all of the tools to build OpenMM. 
 
 
 ### Desmond File Reader for OpenMM
 
-SDM uses Desmond DMS-formatted files. OpenMM includes a python library to load molecular files in DMS Desmond format however, the version of the Desmond file reader required for SDM is not yet included in the latest OpenMM sources. To patch the 7.3.1 OpenMM installation above with the latest DMS file reader do for example:
+SDM uses Desmond DMS-formatted files. OpenMM includes a python library to load molecular files in DMS Desmond format; however, the version of the Desmond file reader required for SDM is not yet included in the latest OpenMM sources. To patch the 7.3.1 OpenMM installation above with the latest DMS file reader, do for example:
 
 ```
 cd $HOME/devel
@@ -45,7 +45,7 @@ The ```sqlitebrowser``` application is very useful to inspect DMS files.
 
 ### ASyncRE for OpenMM
 
-ASyncRE is a package written in python to perform replica exchange simulations in asynchronous mode across a set of GPUs. To install it into a conda environment do:
+ASyncRE is a package written in python to perform replica exchange (RE) simulations in asynchronous mode across a set of GPUs. To install it into a conda environment, do:
 
 ```
 conda install numpy configobj
@@ -57,7 +57,7 @@ python setup.py install
 
 ## Run the ASyncRE simulations
 
-Complex directories of water-droplet with solutes (Ethanol, 1-napthol, Diphenyltoluene and Alanine-dipeptide) with both linear and logistic potential settings are available in the repository. The files have been produced by setting up the simulation parameters for each complex, defining the alchemical schedule and running the workflow for setting up the receptor, and then each complex in turn.
+Complex directories of water-droplet with solutes (ethanol, 1-naphthol, diphenyltoluene and alanine dipeptide) with both linear and logistic potential settings are available in the repository. The files have been produced by setting up the simulation parameters for each complex, defining the alchemical schedule and running the workflow for setting up the receptor, and then each complex in turn.
 
 Go to the simulation directories of each complex and launch the ASyncRE simulations. For example, assuming ASyncRE is installed under ```$HOME/devel/async_re-openmm```:
 
@@ -80,7 +80,7 @@ for a compute server with 4 GPUs when the OpenCL platform is the first platform 
 
 Adjust the settings in the ```runopenmm``` script to reflect your environment.
 
-Each Replica Exchange (RE) simulation is set to run for 480 mins (8 hours). You can change the duration of the simulation run by changing the ```WALL_TIME``` in the ```*_asyncre.cntl``` file present in each complex directory.
+Each RE simulation is set to run for 480 mins (8 hours). You can change the duration of the simulation run by changing the ```WALL_TIME``` in the ```*_asyncre.cntl``` file present in each complex directory.
 Monitor the progress of each ASyncRE simulation by inspecting the ```*_stat.txt``` file. For example:
 
 ```
