@@ -5,8 +5,11 @@ We present a repository of simulation files for water-droplet and solute complex
 ## Contributers
 
 Emilio Gallicchio [egallicchio@brooklyn.cuny.edu](egallicchio@brooklyn.cuny.edu)
+
 Sheenam Khuttan [ssheenam@gradcenter.cuny.edu](ssheenam@gradcenter.cuny.edu)
+
 Solmaz Azimi [sazimi@gradcenter.cuny.edu](sazimi@gradcenter.cuny.edu)
+
 Joe Wu [jwu1@gradcenter.cuny.edu](jwu1@gradcenter.cuny.edu)
 
 ## Credits
