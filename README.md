@@ -3,7 +3,7 @@
 Input files and instructions to run the concerted alchemical simulations for the estimation of the hydration free energies of small to medium sized solute molecules in water droplets using OpenMM described in [Alchemical Transformations for Concerted Hydration Free Energy
 Estimation with Explicit Solvation](https://arxiv.org/abs/2005.06504) Currently in press on the Journal of Chemical Physics.
 
-## Contributers
+## Contributors
 
 Sheenam Khuttan [ssheenam@gradcenter.cuny.edu](ssheenam@gradcenter.cuny.edu)
 
@@ -61,7 +61,7 @@ Complex directories of water-droplet with solutes (Ethanol, 1-napthol, Diphenylt
 
 Go to the simulation directories of each complex and launch the ASyncRE simulations. For example, assuming ASyncRE is installed under ```$HOME/devel/async_re-openmm```:
 
-To run simualtion of Ethanol solute with water droplet under linear alchemical schedule, go to directory **EtOH-lin** *(**-lin** complex directories specify **linear alchemical schedule**, **-log** complex directories specify **logistic alchemical schedule with softplus parameters**.)*
+To run simulation of the ethanol solute with water droplet under linear alchemical schedule, go to directory **EtOH-lin** *(**-lin** complex directories specify **linear alchemical schedule**, **-log** complex directories specify **logistic alchemical schedule with softplus parameters**.)*
 
 Set the `nodefile` to point to a set of GPUs on the local machine. For example:
 
@@ -80,7 +80,7 @@ for a compute server with 4 GPUs when the OpenCL platform is the first platform 
 
 Adjust the settings in the ```runopenmm``` script to reflect your environment.
 
-Each RE simulation is set to run for 480 mins (8 hours). You can change the duration of the simulation run by changing the ```WALL_TIME``` in the ```*_asyncre.cntl``` file present in each complex directory.
+Each Replica Exchange (RE) simulation is set to run for 480 mins (8 hours). You can change the duration of the simulation run by changing the ```WALL_TIME``` in the ```*_asyncre.cntl``` file present in each complex directory.
 Monitor the progress of each ASyncRE simulation by inspecting the ```*_stat.txt``` file. For example:
 
 ```
