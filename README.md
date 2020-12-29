@@ -54,6 +54,10 @@ git clone https://github.com/egallicc/async_re-openmm.git
 cd async_re-openmm
 python setup.py install
 ```
+### VMD
+
+[VMD](http://www.ks.uiuc.edu/Research/vmd/) is an indispensable tool for visualization and analysis of trajectories. Also, we use the catdcd tool distributed with VMD to parse and concatenate .dcd trajectory files. For this tutorial we will assume that VMD is installed in /usr/local.
+
 
 ## Run the ASyncRE simulations
 
@@ -90,6 +94,22 @@ cat water-droplet-ethanol_stat.txt
 Each replica runs in a separate subdirectory named ```r0```, ```r1```, etc. Each cycle generates ```.out```, ```.dms```, ```.log```, ```.pdb```, and ```.dcd``` files. For example the binding energy samples for the first cycle of replica 2 are stored in the file ```r2/water-droplet-ethanol_1.out``` . The .dms files are used to start the following cycle. The .pdb and .dcd files are used for trajectory visualization.
  
 The ASyncRE process can be killed at any time with ```^C``` and optionally restarted. However, replicas currently running on remote machines are likely to keep running and may have to be killed before ASyncRE can be restarted. To start from scratch (that is from the first cycle) remove the replicas directories by doing ```rm -r r? r??```.
+
+## Output
+
+Once the simulation is started, replica directories pointing at each lambda value in the alchemical schedule are produced. 
+In each replica directory, a  ```*.out``` is created producing columns of values in the order: temperature, lambda, lambda1, lambda2, alpha, u0, w0, total potential energy, binding energy.
+
+This output file can then be used to analyze the average value of different parameters over the course of simulation.
+
+Additionally, to visualize the trajectories of the solute-complex binding, ```*.dcd``` files are produced which can be used along with the ```*.pdb``` file in the complex directory with VMD.
+
+```
+cd $HOME/water-droplet/complexes/EtOH-lin
+vmd -f water-droplet-ethanol_6.pdb water-droplet-ethanol.dcd
+```
+
+
 
 
 
