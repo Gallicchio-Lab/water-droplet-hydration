@@ -1,10 +1,9 @@
 # water-droplet-hydration
-Our paper discusses methods for concerted estimation of hydration free energies of small to medium sized solute molecules using softplus potential. [arXiv:2005.06504](https://arxiv.org/abs/2005.06504)
-We present a repository of simulation files for water-droplet and solute complexes with instructions to run alchemical binding free energy calculations with OpenMM.
+
+Input files and instructions to run the concerted alchemical simulations for the estimation of the hydration free energies of small to medium sized solute molecules in water droplets using OpenMM described in [Alchemical Transformations for Concerted Hydration Free Energy
+Estimation with Explicit Solvation](https://arxiv.org/abs/2005.06504) Currently in press on the Journal of Chemical Physics.
 
 ## Contributers
-
-Emilio Gallicchio [egallicchio@brooklyn.cuny.edu](egallicchio@brooklyn.cuny.edu)
 
 Sheenam Khuttan [ssheenam@gradcenter.cuny.edu](ssheenam@gradcenter.cuny.edu)
 
@@ -12,9 +11,11 @@ Solmaz Azimi [sazimi@gradcenter.cuny.edu](sazimi@gradcenter.cuny.edu)
 
 Joe Wu [jwu1@gradcenter.cuny.edu](jwu1@gradcenter.cuny.edu)
 
+Emilio Gallicchio [egallicchio@brooklyn.cuny.edu](egallicchio@brooklyn.cuny.edu)
+
 ## Credits
 
-This software is maintained by the Gallicchio's laboratory at Department of Chemistry of Brooklyn College of CUNY [(compmolbiophysbc.org)](compmolbiophysbc.org). Development and maintenance of this software is supported in part from a grant from the National Science Foundation (CAREER 1750511).
+The repository is maintained by the Gallicchio's laboratory at Department of Chemistry of Brooklyn College of CUNY [(compmolbiophysbc.org)](compmolbiophysbc.org). The work is supported in part from a grant from the National Science Foundation (CAREER 1750511).
 
 
 ## Documentation and Tutorials
@@ -25,58 +26,34 @@ The project walks you over the steps to setup and run alchemical absolute bindin
 
 ### OpenMM
 
-We recommend installing OpenMM from [source](https://github.com/openmm/openmm) since most of the steps required are the same as for building the SDM-related plugins. However binary installations of OpenMM should probably also work. Detailed building instructions for OpenMM are [here](http://docs.openmm.org/latest/userguide/library.html#compiling-openmm-from-source-code). SDM requires an OpenCL platform with GPUs from NVIDIA (CUDA) or AMD, which we assume are in place.
+We recommend installing OpenMM from [source](https://github.com/openmm/openmm) since most of the steps required are the same as for building the SDM-related plugins. However binary installations of OpenMM should probably also work. Detailed building instructions for OpenMM are [here](http://docs.openmm.org/latest/userguide/library.html#compiling-openmm-from-source-code). SDM requires an OpenCL platform with GPUs from NVIDIA (CUDA) or AMD, which we assume are in place. We developed a [docker image](https://hub.docker.com/repository/docker/egallicchio/centos610-openmmbuilder) with all of the tools to build OpenMM. 
 
-These are the steps we used to build OpenMM 7.3.1 on an Ubuntu 16.04 system:
-
-```
-mkdir $HOME/devel
-cd $HOME/devel
-wget https://github.com/pandegroup/openmm/archive/7.3.1.tar.gz
-tar zxvf 7.3.1.tar.gz
-conda install cmake=3.6.3 swig numpy
-conda install -c conda-forge doxygen
-mkdir build_openmm
-cd build_openmm
-ccmake -i ../openmm-7.3.1
-```
-
-Hit ```c``` (configure) until all variables are correctly set. Set ```CMAKE_INSTALL_PREFIX``` to point to the openmm installation directory. Here we assume ```$HOME/local/openmm-7.3.1```. If an OpenCL platform is detected (such as from a NVIDIA CUDA installation) it will be enabled automatically. For the present purposes the CUDA platform is optional. Hit ```g``` to generate the makefiles and ```q``` to exit ```ccmake```, then:
-
-```
-make install
-make PythonInstall
-```
-
-The OpenMM libraries and header files will be installed in ```$HOME/local/openmm-7.3.1```
 
 ### Desmond File Reader for OpenMM
 
-SDM uses Desmond DMS-formatted files. OpenMM includes a python library to load molecular files in DMS Desmond format however, the version of the Desmond file reader required for SDM is not yet included in the latest OpenMM sources. To patch the 7.3.1 OpenMM installation above with the latest DMS file reader do the following:
+SDM uses Desmond DMS-formatted files. OpenMM includes a python library to load molecular files in DMS Desmond format however, the version of the Desmond file reader required for SDM is not yet included in the latest OpenMM sources. To patch the 7.3.1 OpenMM installation above with the latest DMS file reader do for example:
 
 ```
 cd $HOME/devel
 wget https://raw.githubusercontent.com/egallicc/openmm/master/wrappers/python/simtk/openmm/app/desmonddmsfile.py
 cp desmonddmsfile.py $HOME/devel/openmm-7.3.1/wrappers/python/simtk/openmm/app/
-cd $HOME/devel/build_openmm
-make install
-make PythonInstall
 ```
- 
+
+Then rebuild OpenMM from the sources in ```$HOME/devel/openmm-7.3.1```.
+
 The ```sqlitebrowser``` application is very useful to inspect DMS files.
 
 ### ASyncRE for OpenMM
 
-ASyncRE is a package written in python to perform replica exchange simulations in asynchronous mode across a wide range of computational devices and grids. The specific version used by SDM distributes OpenMM jobs across GPU compute servers through passwordless ssh. To install it do:
+ASyncRE is a package written in python to perform replica exchange simulations in asynchronous mode across a set of GPUs. To install it into a conda environment do:
 
 ```
-conda install numpy configobj paramiko
+conda install numpy configobj
 cd $HOME/devel
 git clone https://github.com/egallicc/async_re-openmm.git
 cd async_re-openmm
 python setup.py install
 ```
-Here is a [guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-ubuntu-1604) to set up password-less ```ssh``` across a farm of computers. ASyncRE does not require that the compute servers share a common user space and a shared filesystem.
 
 ## Run the ASyncRE simulations
 
@@ -88,7 +65,7 @@ To run simualtion of Ethanol solute with water droplet under linear alchemical s
 
 ```
 cd $HOME/water-droplet/complexes/EtOH-lin
-./runopenmm $HOME/devel/async_re-openmm/bedamtempt_async_re.py water-droplet-ethanol_asyncre.cntl
+./runopenmm $HOME/devel/async_re-openmm/bedamtemptwd_async_re.py water-droplet-ethanol_asyncre.cntl
 ```
 
 Each RE simulation is set to run for 480 mins (8 hours). You can change the duration of the simulation run by changing the ```WALL_TIME``` in the ```*_asyncre.cntl``` file present in each complex directory.
