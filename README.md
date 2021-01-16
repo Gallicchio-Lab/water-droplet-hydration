@@ -1,7 +1,7 @@
 # water-droplet-hydration
 
 Input files and instructions to run the concerted alchemical simulations for the estimation of the hydration free energies of small to medium sized solute molecules in water droplets using OpenMM described in [Alchemical Transformations for Concerted Hydration Free Energy
-Estimation with Explicit Solvation](https://arxiv.org/abs/2005.06504) Currently in press on the Journal of Chemical Physics.
+Estimation with Explicit Solvation](https://arxiv.org/abs/2005.06504), currently in press on the Journal of Chemical Physics.
 
 ## Contributors
 
@@ -61,7 +61,7 @@ python setup.py install
 
 ## Run the ASyncRE simulations
 
-Complex directories of water-droplet with solutes (ethanol, 1-naphthol, diphenyltoluene and alanine dipeptide) with both linear and logistic potential settings are available in the repository. The files have been produced by setting up the simulation parameters for each complex, defining the alchemical schedule and running the workflow for setting up the receptor, and then each complex in turn.
+Complex directories of water-droplet with solutes (ethanol, 1-naphthol, diphenyltoluene, and alanine dipeptide) with both linear and logistic potential settings are available in the repository. The files have been produced by setting up the simulation parameters for each complex, defining the alchemical schedule, and running the workflow for setting up the receptor, and then each complex in turn.
 
 Go to the simulation directories of each complex and launch the ASyncRE simulations. For example, assuming ASyncRE is installed under ```$HOME/devel/async_re-openmm```:
 
@@ -84,7 +84,7 @@ for a compute server with 4 GPUs when the OpenCL platform is the first platform 
 
 Adjust the settings in the ```runopenmm``` script to reflect your environment.
 
-Each RE simulation is set to run for 480 mins (8 hours). You can change the duration of the simulation run by changing the ```WALL_TIME``` in the ```*_asyncre.cntl``` file present in each complex directory.
+Each Replica Exchange (RE) simulation is set to run for 480 minutes (48 minutes each cycle x 10 cycles). You can change the duration of the simulation run by changing the ```WALL_TIME``` in the ```*_asyncre.cntl``` file present in each complex directory.
 Monitor the progress of each ASyncRE simulation by inspecting the ```*_stat.txt``` file. For example:
 
 ```
@@ -93,12 +93,12 @@ cat water-droplet-ethanol_stat.txt
 ```
 Each replica runs in a separate subdirectory named ```r0```, ```r1```, etc. Each cycle generates ```.out```, ```.dms```, ```.log```, ```.pdb```, and ```.dcd``` files. For example the binding energy samples for the first cycle of replica 2 are stored in the file ```r2/water-droplet-ethanol_1.out``` . The .dms files are used to start the following cycle. The .pdb and .dcd files are used for trajectory visualization.
  
-The ASyncRE process can be killed at any time with ```^C``` and optionally restarted. However, replicas currently running on remote machines are likely to keep running and may have to be killed before ASyncRE can be restarted. To start from scratch (that is from the first cycle) remove the replicas directories by doing ```rm -r r? r??```.
+The ASyncRE process can be killed at any time with ```^C``` and optionally restarted. However, replicas currently running on remote machines are likely to keep running and may have to be killed before ASyncRE can be restarted. To start from scratch (that is from the first cycle) remove all of the replicas directories by doing ```rm -r r? r??```.
 
 ## Output
 
 Once the simulation has started, replica directories pointing at each lambda value in the alchemical schedule are produced. 
-In each replica directory, a  ```*.out``` is created producing columns of values in the order: temperature, lambda, lambda1, lambda2, alpha, u0, w0, total potential energy, binding energy.
+In each replica directory, a  ```*.out``` is created, producing columns of values in the order: temperature, lambda, lambda1, lambda2, alpha, u0, w0, total potential energy, binding energy.
 
 This output file can then be used to analyze the average value of different parameters over the course of simulation.
 
